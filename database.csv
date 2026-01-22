@@ -1,0 +1,21 @@
+id,name,price,description,category,imageUrl,isAvailable,createdAt,updatedAt
+1,Iced Americano,55,อเมริกาโน่เย็น เข้มข้น ไม่หวาน,coffee,https://images.unsplash.com/photo-1517701604599-bb29b5dd73ad?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:00:00,2026-01-22 03:00:00
+2,Hot Latte,60,ลาเต้ร้อน ฟองนมนุ่มละมุน เสิร์ฟพร้อมลาย Latte Art,coffee,https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:01:00,2026-01-22 03:01:00
+3,Iced Cappuccino,65,คาปูชิโน่เย็น ฟองนมหนานุ่ม โรยผงโกโก้,coffee,https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:02:00,2026-01-22 03:02:00
+4,Caramel Macchiato,75,กาแฟผสมนมสด ราดซอสคาราเมล หอมหวาน,coffee,https://images.unsplash.com/photo-1485808191679-5f8c7c860695?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:03:00,2026-01-22 03:03:00
+5,Es-Yen (Thai Style),60,เอสเพรสโซ่เย็น สไตล์ไทย หวานมัน ถึงใจ,coffee,https://images.unsplash.com/photo-1599398054066-846f28917f38?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:04:00,2026-01-22 03:04:00
+6,Iced Mocha,70,มอคค่าเย็น ผสมผสานกาแฟและช็อกโกแลตอย่างลงตัว,coffee,https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:05:00,2026-01-22 03:05:00
+7,Hot Espresso,45,เอสเพรสโซ่ร้อน เข้มข้น หอมกรุ่น,coffee,https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:06:00,2026-01-22 03:06:00
+8,Iced Vanilla Latte,70,ลาเต้เย็นกลิ่นวานิลลา หอมหวาน,coffee,https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:07:00,2026-01-22 03:07:00
+9,Affogato,85,เอสเพรสโซ่ราดบนไอศกรีมวานิลลา หวานเย็น,coffee,https://images.unsplash.com/photo-1579992357154-faf4bde95b3d?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:08:00,2026-01-22 03:08:00
+10,Cold Brew,65,กาแฟสกัดเย็น 12 ชั่วโมง รสชาติเนียนนุ่ม,coffee,https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:09:00,2026-01-22 03:09:00
+11,Iced Matcha Latte,70,มัจฉะลาเต้เย็น ใช้ผงมัจฉะแท้จากญี่ปุ่น,tea,https://images.unsplash.com/photo-1515823664972-6d9028334863?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:10:00,2026-01-22 03:10:00
+12,Thai Tea,50,ชาไทยเย็น สีส้ม หอมชาคั่ว สูตรต้นตำรับ,tea,https://images.unsplash.com/photo-1626509653294-46b856b7c53e?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:11:00,2026-01-22 03:11:00
+13,Lychee Tea,55,ชาลิ้นจี่ หอมหวานสดชื่น ดับกระหาย,tea,https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:12:00,2026-01-22 03:12:00
+14,Peach Oolong Tea,60,ชาอู่หลงพีช หอมผลไม้ รสชาตินุ่มนวล,tea,https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:13:00,2026-01-22 03:13:00
+15,Hot Green Tea,40,ชาเขียวร้อน ชงสด กลิ่นหอมอ่อน,tea,https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:14:00,2026-01-22 03:14:00
+16,Chocolate Frappe,80,ช็อกโกแลตปั่น เข้มข้น ท็อปด้วยวิปครีม,dessert,https://images.unsplash.com/photo-1577805947697-89e18249d767?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:15:00,2026-01-22 03:15:00
+17,Strawberry Smoothie,75,สตรอว์เบอร์รี่ปั่น สดชื่น เปรี้ยวหวาน,dessert,https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:16:00,2026-01-22 03:16:00
+18,Mango Smoothie,75,มะม่วงปั่น หวานหอม เนื้อเนียน,dessert,https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:17:00,2026-01-22 03:17:00
+19,Cookies & Cream Frappe,85,คุกกี้แอนด์ครีมปั่น หอมมัน กรอบอร่อย,dessert,https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:18:00,2026-01-22 03:18:00
+20,Fresh Orange Juice,55,น้ำส้มคั้นสด วิตามินซีเต็มแก้ว,other,https://images.unsplash.com/photo-1534353473418-4cfa6c56fd38?auto=format&fit=crop&w=500&q=60,true,2026-01-22 03:19:00,2026-01-22 03:19:00

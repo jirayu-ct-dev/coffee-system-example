@@ -287,7 +287,8 @@ export const createOrderReceiptFlex = (
     orderNumber: string,
     items: { name: string; quantity: number; price: number }[],
     totalPrice: number,
-    userName?: string
+    userName?: string,
+    promptPayUrl?: string
 ): LineFlexMessage => {
     const itemContents = items.map(item => ({
         type: 'box',
@@ -375,17 +376,42 @@ export const createOrderReceiptFlex = (
                             { type: 'text', text: `฿${totalPrice.toLocaleString()}`, size: 'lg', color: '#D97706', weight: 'bold', align: 'end' },
                         ],
                     },
+                    ...(promptPayUrl ? [
+                        { type: 'separator', margin: 'lg' },
+                        {
+                            type: 'box',
+                            layout: 'vertical',
+                            margin: 'lg',
+                            contents: [
+                                { type: 'text', text: 'สแกนจ่ายเงิน (PromptPay)', size: 'sm', color: '#555555', align: 'center', margin: 'md' },
+                                {
+                                    type: 'image',
+                                    url: promptPayUrl,
+                                    size: 'xl',
+                                    aspectMode: 'cover',
+                                    margin: 'md',
+                                },
+                            ]
+                        }
+                    ] : []),
                 ],
                 paddingAll: '20px',
+            },
+            styles: {
+                footer: {
+                    separator: true
+                }
             },
             footer: {
                 type: 'box',
                 layout: 'vertical',
                 contents: [
-                    { type: 'text', text: `📅 ${new Date().toLocaleString('th-TH')}`, size: 'xs', color: '#999999', align: 'center' },
+                    { type: 'text', text: '📸 กรุณาส่งรูปสลิปโอนเงินเพื่อยืนยันออเดอร์', size: 'sm', color: '#111111', align: 'center', wrap: true },
+                    { type: 'separator', margin: 'md' },
+                    { type: 'text', text: `📅 ${new Date().toLocaleString('th-TH')}`, size: 'xs', color: '#999999', align: 'center', margin: 'md' },
                     { type: 'text', text: '🙏 ขอบคุณที่ใช้บริการ', size: 'sm', color: '#D97706', align: 'center', margin: 'sm', weight: 'bold' },
                 ],
-                backgroundColor: '#FEF3C7',
+                backgroundColor: '#FAFAFA',
                 paddingAll: '15px',
             },
         },

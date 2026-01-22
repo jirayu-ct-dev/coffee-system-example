@@ -61,6 +61,7 @@ const getItemQuantity = (menuId: number): number => {
 
 // ===== ORDER SUBMISSION =====
 const orderError = ref<string | null>(null)
+const paymentQrUrl = ref<string | null>(null)
 
 const handleOrder = async () => {
     if (cartItems.value.length === 0) return
@@ -73,6 +74,7 @@ const handleOrder = async () => {
 
     isSending.value = true
     sendSuccess.value = false
+    paymentQrUrl.value = null
     orderError.value = null
 
     try {
@@ -96,18 +98,20 @@ const handleOrder = async () => {
 
         if (response.success) {
             sendSuccess.value = true
+            paymentQrUrl.value = response.order.paymentUrl
             clearCart()
 
             // ส่งข้อความยืนยันในแชทด้วย (ถ้าอยู่ใน LIFF)
             if (isInClient.value) {
-                await sendMessage(`✅ สั่งซื้อสำเร็จ!\n📋 หมายเลขออเดอร์: #${response.order.orderNumber}\n💰 ยอดรวม: ฿${response.order.totalPrice.toLocaleString()}`)
+                await sendMessage(`✅ สั่งซื้อสำเร็จ!\n📋 หมายเลขออเดอร์: #${response.order.orderNumber}\n💰 ยอดรวม: ฿${response.order.totalPrice.toLocaleString()}\n\n📸 กรุณาชำระเงินผ่าน QR Code ในใบเสร็จ และส่งรูปสลิปเพื่อยืนยันครับ`)
             }
 
             // Close LIFF window after success (only if in LINE app)
+            // Delay increased to allow user to see the success screen
             if (isInClient.value) {
                 setTimeout(() => {
                     closeWindow()
-                }, 3000)
+                }, 5000)
             }
         }
     } catch (error: any) {
@@ -245,7 +249,7 @@ const handleOrder = async () => {
                                         <UButton icon="i-lucide-minus" size="xs" color="neutral" variant="soft" square
                                             @click="updateQuantity(menu.id, getItemQuantity(menu.id) - 1)" />
                                         <span class="text-xs font-bold w-5 text-center">{{ getItemQuantity(menu.id)
-                                            }}</span>
+                                        }}</span>
                                         <UButton icon="i-lucide-plus" size="xs" color="primary" variant="soft" square
                                             @click="addToCart(menu)" />
                                     </div>
@@ -352,7 +356,7 @@ const handleOrder = async () => {
                             class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-4 space-y-2">
                             <div v-for="item in cartItems" :key="item.menu.id" class="flex justify-between text-sm">
                                 <span class="text-gray-600 truncate flex-1">{{ item.menu.name }} x{{ item.quantity
-                                    }}</span>
+                                }}</span>
                                 <span class="font-medium text-gray-800 ml-2">{{ formatPrice(item.menu.price *
                                     item.quantity) }}</span>
                             </div>
@@ -367,8 +371,19 @@ const handleOrder = async () => {
 
                         <!-- Success Message -->
                         <Transition name="fade">
-                            <UAlert v-if="sendSuccess" color="success" variant="soft" title="🎉 สั่งซื้อสำเร็จ!"
-                                description="ใบเสร็จถูกส่งไปยัง LINE ของคุณแล้ว" icon="i-lucide-check-circle" />
+                            <div v-if="sendSuccess" class="space-y-3">
+                                <UAlert color="success" variant="soft" title="🎉 สั่งซื้อสำเร็จ!"
+                                    description="กรุณาตรวจสอบใบเสร็จใน LINE เพื่อชำระเงิน"
+                                    icon="i-lucide-check-circle" />
+
+                                <div v-if="paymentQrUrl"
+                                    class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm text-center">
+                                    <p class="text-xs text-gray-500 mb-2">สแกน QR เพื่อจ่ายเงิน</p>
+                                    <img :src="paymentQrUrl" alt="PromptPay QR"
+                                        class="w-48 h-48 mx-auto rounded-lg object-contain mb-2 border border-gray-100">
+                                    <p class="text-xs font-bold text-amber-600">📸 ส่งสลิปในแชทเพื่อยืนยัน</p>
+                                </div>
+                            </div>
                         </Transition>
 
                         <!-- Error Message -->

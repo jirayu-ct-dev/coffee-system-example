@@ -1,6 +1,7 @@
 // server/api/order.post.ts
 import { prisma } from '~~/server/utils/db'
 import { pushMessage, createOrderReceiptFlex } from '~~/server/utils/line'
+import generatePayload from 'promptpay-qr'
 
 interface OrderItem {
     menuId: number
@@ -71,6 +72,12 @@ export default defineEventHandler(async (event) => {
         // Generate order number (timestamp-based)
         const orderNumber = `ORD${Date.now().toString(36).toUpperCase()}`
 
+        // Generate PromptPay QR Code
+        // TODO: Change this to your actual PromptPay ID (Mobile or Tax ID)
+        const PROMPTPAY_NUMBER = process.env.PROMPTPAY_NUMBER || '0812345678'
+        const promptPayPayload = generatePayload(PROMPTPAY_NUMBER, { amount: totalPrice })
+        const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(promptPayPayload)}`
+
         // Create order receipt Flex Message
         const receiptItems = orderItems.map(item => ({
             name: item.name,
@@ -82,7 +89,8 @@ export default defineEventHandler(async (event) => {
             orderNumber,
             receiptItems,
             totalPrice,
-            body.userName
+            body.userName,
+            qrCodeUrl
         )
 
         // Send receipt to user via LINE Push Message
@@ -102,6 +110,7 @@ export default defineEventHandler(async (event) => {
                 items: orderItems,
                 totalPrice,
                 createdAt: new Date().toISOString(),
+                paymentUrl: qrCodeUrl,
             },
             lineMessageSent: pushResult.success,
         }

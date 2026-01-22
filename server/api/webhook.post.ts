@@ -5,9 +5,10 @@ import { prisma } from '~~/server/utils/db'
 import {
     replyMessage,
     isAnimationLoading,
+    getImageBinary,
     type LineMessage
 } from '~~/server/utils/line'
-import { chatWithMenuContext, type ChatMessage } from '~~/server/utils/gemini'
+import { chatWithMenuContext, multimodal, type ChatMessage } from '~~/server/utils/gemini'
 
 // ===== Chat History Cache (per user) =====
 const userChatHistory = new Map<string, ChatMessage[]>()
@@ -27,9 +28,16 @@ interface LineTextMessage {
     text: string
 }
 
+interface LineImageMessage {
+    type: 'image'
+    id: string
+}
+
+type WebhookMessage = LineTextMessage | LineImageMessage
+
 interface LineMessageEvent {
     type: 'message'
-    message: LineTextMessage
+    message: WebhookMessage
     timestamp: number
     source: LineSource
     replyToken: string
@@ -198,6 +206,61 @@ export default defineEventHandler(async (event) => {
                 await replyMessage(replyToken, [
                     { type: 'text', text: responseText }
                 ])
+            }
+
+            // Handle Image Event (Payment Slip Verification)
+            if (lineEvent.type === 'message' && lineEvent.message.type === 'image') {
+                const messageId = lineEvent.message.id
+                const userId = lineEvent.source.userId || 'unknown'
+                const replyToken = lineEvent.replyToken
+
+                console.log(`🖼️ Image received from ${userId}`)
+
+                // Show loading animation
+                if (userId !== 'unknown') {
+                    await isAnimationLoading(userId, 10)
+                }
+
+                try {
+                    // Get Image Binary
+                    const imageBuffer = await getImageBinary(messageId)
+                    if (!imageBuffer) {
+                        await replyMessage(replyToken, [
+                            { type: 'text', text: '❌ ไม่สามารถอ่านรูปภาพได้ กรุณาลองใหม่อีกครั้ง' }
+                        ])
+                        continue
+                    }
+
+                    // Convert to Base64
+                    const base64Image = Buffer.from(imageBuffer).toString('base64')
+
+                    // Analyze with Gemini
+                    // TODO: You can customize the prompt to extract specific Bank names or Account numbers if needed
+                    const prompt = `ภาพนี้คือสลิปการโอนเงินธนาคารของไทยใช่หรือไม่?
+                    
+                    ถ้าใช่: 
+                    1. บอกว่าเป็นสลิปถูกต้อง ✅
+                    2. ระบุยอดเงินที่โอน (บาท)
+                    3. ระบุวันและเวลาที่โอน
+                    4. ระบุชื่อผู้รับโอน (ถ้ามี)
+                    ตอบกลับด้วยข้อความสั้นๆ เช่น "✅ ได้รับยอดเงิน 120 บาท เมื่อ 12:30 น. เรียบร้อยครับ ออเดอร์กำลังดำเนินการ"
+
+                    ถ้าไม่ใช่สลิป:
+                    ตอบสั้นๆ ว่า "⚠️ รูปภาพนี้ดูไม่เหมือนสลิปการโอนเงิน รบกวนส่งรูปสลิปที่ถูกต้องด้วยครับ"
+                    `
+
+                    const aiResponse = await multimodal(prompt, base64Image)
+
+                    await replyMessage(replyToken, [
+                        { type: 'text', text: aiResponse }
+                    ])
+
+                } catch (error: any) {
+                    console.error('❌ Error processing image:', error)
+                    await replyMessage(replyToken, [
+                        { type: 'text', text: 'ขออภัย ระบบตรวจสอบสลิปขัดข้องชั่วคราว 🙏' }
+                    ])
+                }
             }
         }
 
